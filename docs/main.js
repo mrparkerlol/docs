@@ -8,9 +8,6 @@ import {
 let qrGenerate, qrMode, qrCorrection;
 
 let domain = window.location.hostname;
-if (domain !== "ha.mr" && domain !== "www.ha.mr") {
-  console.log(`This page is intended to be used on the ha.mr domain. You are currently on ${domain}.`);
-}
 const webPort = window.location.port;
 if (webPort && webPort !== "80" && webPort !== "443") {
   domain += `:${webPort}`;
@@ -186,13 +183,6 @@ const redirectContainerElement = document.querySelector("#redirect-container");
 const redirectLinkElement = document.querySelector("#redirect-link");
 const loaderElement = document.querySelector("#loader");
 
-function handleRedirectPrompt (target) {
-  loaderElement.style.display = "none";
-  redirectContainerElement.style.display = "flex";
-  redirectLinkElement.textContent = target;
-  redirectLinkElement.href = target;
-}
-
 inputLinkElement.addEventListener("input", () => {
   updateOutput();
 });
@@ -220,7 +210,7 @@ inputLinkElement.addEventListener("input", () => {
   if (payload && payload.trim()) {
     try {
       const target = decompress(payload, alphabet);
-      handleRedirectPrompt(target);
+      window.location.href = target
       return;
     } catch (e) {
       console.warn(`Redirect failed. Could not decode input.`);
