@@ -210,7 +210,16 @@ inputLinkElement.addEventListener("input", () => {
   if (payload && payload.trim()) {
     try {
       const target = decompress(payload, alphabet);
-      window.location.href = target
+
+      // Removes referer (HACK)
+      // https://stackoverflow.com/a/49639839
+      var link = document.createElement("a");
+      link.referrerPolicy = "no-referrer";
+      link.rel = "noreferrer";
+
+      link.href = target;
+      link.click();
+
       return;
     } catch (e) {
       console.warn(`Redirect failed. Could not decode input.`);
